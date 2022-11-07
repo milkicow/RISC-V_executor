@@ -22,7 +22,9 @@ private:
         ADDI, SLTI, SLTIU,
         ANDI, ORI, XORI,
         JAL, JALR,
-        ERROR
+        ERROR,
+        LB, LH, LW, LBU, LHU,
+        SB, SH, SW
 
     };
 
@@ -37,7 +39,9 @@ private:
         "ADDI", "SLTI", "SLTIU",
         "ANDI", "ORI", "XORI",
         "JAL", "JALR",
-        "ERROR"
+        "ERROR",
+        "LB", "LH", "LW", "LBU", "LHU",
+        "SB", "SH", "SW"
     };
 
 
@@ -74,6 +78,14 @@ private:
     bool executeXORI(Core *core);
     bool executeJAL(Core *core);
     bool executeJALR(Core *core);
+    bool executeLB(Core *core);
+    bool executeLH(Core *core);
+    bool executeLW(Core *core);
+    bool executeLBU(Core *core);
+    bool executeLHU(Core *core);
+    bool executeSB(Core *core);
+    bool executeSH(Core *core);
+    bool executeSW(Core *core);
             /* !!!TO DO:!!! */
     bool executeBRANCH(Core *core);
     bool executeLOAD(Core *core);

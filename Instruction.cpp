@@ -12,6 +12,47 @@ Instruction::Instruction(Core *core, uint32_t code)
         exec_status_ = false;
         break;
     }
+    case 0b0000011: // I-type 
+    {
+        rd_ = static_cast<RegId> (get_bits(code, 11, 7));
+        rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
+        imm_ = static_cast<int32_t> (get_bits(static_cast<int32_t> (code), 31, 20));
+        
+        auto funct3 = get_bits(code, 14, 12);
+
+        if (funct3 == 0b000) // LB
+        {
+            inst_tp_ = LB;
+            exec_status_ = Instruction::executeLB(core);
+        }
+        else if (funct3 == 0b001) // LH
+        {
+            inst_tp_ = LH;
+            exec_status_ = Instruction::executeLH(core);
+        }
+        else if (funct3 == 0b010) // LW
+        {
+            inst_tp_ = LW;
+            exec_status_ = Instruction::executeLW(core);
+        }
+        else if (funct3 == 0b100) // LBU
+        {
+            inst_tp_ = LBU;
+            exec_status_ = Instruction::executeLBU(core);
+        }
+        else if (funct3 == 0b101) // LHU
+        {
+            inst_tp_ = LHU;
+            exec_status_ = Instruction::executeLHU(core);
+        }
+        else 
+        {
+            std::cout << "no match with command = " << code << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        break;
+    }
     case 0b0010111: // U-type AUIPC
     {
         imm_ = get_bits(code, 31, 12);
@@ -186,6 +227,37 @@ Instruction::Instruction(Core *core, uint32_t code)
         imm_ = (get_bits(code, 31, 31) << 20) + (get_bits(code, 30, 21) << 1) + (get_bits(code, 20, 20) << 11) + (get_bits(code, 19, 12) << 12);
 
         exec_status_ = Instruction::executeJAL(core);
+        break;
+    }
+    case 0b01000011: // SB, SH, SW
+    {   
+        rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
+        rs2_ = static_cast<RegId> (get_bits(code, 24, 20));
+
+        imm_ = (get_bits(static_cast<int32_t>(code), 31, 25) << 5) + get_bits(code, 11, 7);
+        auto funct3 = get_bits(code, 14, 12);
+
+        if (funct3 == 0b000) // SB
+        {   
+            inst_tp_ = SB;
+            exec_status_ = Instruction::executeSB(core);
+        }
+        else if (funct3 == 0b001) // SH
+        {
+            inst_tp_ = SH;
+            exec_status_ = Instruction::executeSH(core);
+        }
+        else if (funct3 == 0b010) // SW
+        {
+            inst_tp_ = SW;
+            exec_status_ = Instruction::executeSW(core);
+        }
+        else
+        {
+            std::cout << "no match with command = " << code << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        
         break;
     }
     default:
@@ -387,6 +459,68 @@ bool Instruction::executeJALR(Core *core)
 
     return true;
 };
+
+
+bool Instruction::executeLB(Core *core) // ??????
+{   
+    uint32_t value;
+    core->read(core->GetReg(rs1_) + imm_, &value, 1);
+    core->SetReg(rd_, value + (get_bits(value, 7, 7) == 0b1 ? 0xFFFFFF00 : 0)); 
+    return true;
+};
+
+bool Instruction::executeLH(Core *core)
+{
+    uint32_t value;
+    core->read(core->GetReg(rs1_) + imm_, &value, 2);
+    core->SetReg(rd_, value + (get_bits(value, 15, 15) == 0b1 ? 0xFFFF0000 : 0));
+    return true;
+};
+
+bool Instruction::executeLW(Core *core)
+{
+    uint32_t value;
+    core->read(core->GetReg(rs1_) + imm_, &value, 4);
+    core->SetReg(rd_, value);
+    return true;
+};
+
+bool Instruction::executeLBU(Core *core)
+{
+    uint32_t value;
+    core->read(core->GetReg(rs1_) + imm_, &value, 1);
+    core->SetReg(rd_, value);
+    return true;
+};
+
+bool Instruction::executeLHU(Core *core)
+{
+    uint32_t value;
+    core->read(core->GetReg(rs1_) + imm_, &value, 2);
+    core->SetReg(rd_, value);
+    return true;
+};
+
+// S-type
+
+bool Instruction::executeSB(Core *core)
+{
+    core->write(core->GetReg(rs1_) + imm_, core->GetReg(rs2_), 1);
+    return true;
+
+};
+bool Instruction::executeSH(Core *core)
+{
+    core->write(core->GetReg(rs1_) + imm_, core->GetReg(rs2_), 2);
+    return true;
+};
+
+bool Instruction::executeSW(Core *core)
+{
+    core->write(core->GetReg(rs1_) + imm_, core->GetReg(rs2_), 4);
+    return true;
+};
+
 
 uint32_t Instruction::get_bits(uint32_t code, size_t head, size_t tail)
 {
