@@ -12,13 +12,13 @@ int main(int argc, char *argv[]) {
     std::vector<std::string> stream;
     
     ClearFile("logfile.txt");
-    LOX
+    
     stream = pars::read_str(filename);
     std::vector<uint32_t>commands = pars::getcommands(stream);
-    LOX
+    
     std::cout << "vector of commands: " << std::endl;
     for (auto ptr = commands.begin(); ptr != commands.end(); ++ptr) {
-        LOX
+        
         std::cout << std::hex << *ptr << std::endl;
     }
     std::cout << std::endl;

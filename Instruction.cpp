@@ -260,6 +260,50 @@ Instruction::Instruction(Core *core, uint32_t code)
         
         break;
     }
+    case 0b1100011:
+    {
+        rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
+        rs2_ = static_cast<RegId> (get_bits(code, 24, 20));
+
+        imm_ = (get_bits(code, 30, 25) << 5) + (get_bits(code, 11, 8) << 1) + (get_bits(code, 7, 7) << 11) + (get_bits(static_cast<int32_t>(code), 31, 31) << 12);
+
+        auto funct3 = get_bits(code, 14, 12);
+        if (funct3 == 0b000) // BEQ
+        {
+            inst_tp_ = BEQ;
+            exec_status_ = executeBEQ(core);
+        }
+        else if (funct3 == 0b001) // BNE
+        {
+            inst_tp_ = BNE;
+            exec_status_ = executeBEQ(core);
+        }
+        else if (funct3 == 0b100) // BLT
+        {
+            inst_tp_ = BLT;
+            exec_status_ = executeBLT(core);
+        } 
+        else if (funct3 == 0b101) // BGE
+        {
+            inst_tp_ = BGE;
+            exec_status_ = executeBGE(core);
+        }
+        else if (funct3 == 0b110) // BLTU
+        {
+            inst_tp_ = BLTU;
+            exec_status_ = executeBLTU(core);
+        }
+        else if (funct3 == 0b111) // BGEU
+        {
+            inst_tp_ = BGEU;
+            exec_status_ = executeBGEU(core);
+        } 
+        else 
+        {
+            std::cout << "no match with command = " << code << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
     default:
         std::cout << "no match with opcode = " << unsigned(type) << std::endl;
         exit(EXIT_FAILURE);
@@ -518,6 +562,48 @@ bool Instruction::executeSH(Core *core)
 bool Instruction::executeSW(Core *core)
 {
     core->write(core->GetReg(rs1_) + imm_, core->GetReg(rs2_), 4);
+    return true;
+};
+
+bool Instruction::executeBEQ(Core * core)
+{
+    if (core->GetReg(rs1_) == core->GetReg(rs2_))
+        core->branch(core->GetPc() + imm_); 
+    return true;
+};
+
+bool Instruction::executeBNE(Core * core)
+{
+    if (core->GetReg(rs1_) != core->GetReg(rs2_))
+        core->branch(core->GetPc() + imm_); 
+    return true;
+};
+
+bool Instruction::executeBLT(Core * core)
+{
+    if (static_cast<int32_t>(core->GetReg(rs1_)) < static_cast<int32_t>(core->GetReg(rs2_)))
+        core->branch(core->GetPc() + imm_);
+    return true;
+};
+
+bool Instruction::executeBGE(Core * core)
+{
+    if (static_cast<int32_t>(core->GetReg(rs1_)) >= static_cast<int32_t>(core->GetReg(rs2_)))
+        core->branch(core->GetPc() + imm_);
+    return true;
+};
+
+bool Instruction::executeBLTU(Core * core)
+{
+    if (core->GetReg(rs1_) < core->GetReg(rs2_))
+        core->branch(core->GetPc() + imm_);
+    return true;
+};
+
+bool Instruction::executeBGEU(Core * core)
+{
+    if (core->GetReg(rs1_) >= core->GetReg(rs2_))
+        core->branch(core->GetPc() + imm_);
     return true;
 };
 

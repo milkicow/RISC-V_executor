@@ -1,7 +1,7 @@
 /* -----------------------------------------  TO DO: ----------------------------------------- */
     // do many exefunctions!!!
-    // do normal debug vv not bad 
-    // do func to work with memory: read and write for branch load and store as i conserned !!! !!!
+    // do normal debug vv: not bad 
+    // do func to work with memory: read and write for branch load and store as i conserned !!! !!! v
 
 
 
@@ -13,10 +13,14 @@
 
 
     // NEXT STEP:
-    // do func to work with memory: read and write for branch load and store as i conserned !!! !!!
+    // do func to work with memory: read and write for branch load and store as i conserned !!! !!! vv NO TEST - LACK OF MEMORY :))
     // signed / unsigned numbers + in dmp: why imm_ is unsigned?? lol however it wiil work if i cast it to sign in other commands normally i think no?
 
-    // separate on many headers like Core, Instruction and mb + Hardware
+    // separate on many headers like Core, Instruction and mb + Hardware vv
+
+
+    // need to do:
+    // char memory + normal exe function + test functions + work with addresses
 /* ----------------------------------------- -------- -----------------------------------------*/
 
 #include "libs.hpp"

@@ -113,4 +113,9 @@ std::vector<uint32_t> getcommands(std::vector<std::string>& stream) {
     return commands;
 }
 
+void pasring(char * mem_)
+{
+    
+}
+
 }

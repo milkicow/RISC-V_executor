@@ -24,7 +24,8 @@ private:
         JAL, JALR,
         ERROR,
         LB, LH, LW, LBU, LHU,
-        SB, SH, SW
+        SB, SH, SW,
+        BEQ, BNE, BLT, BGE, BLTU, BGEU
 
     };
 
@@ -41,7 +42,8 @@ private:
         "JAL", "JALR",
         "ERROR",
         "LB", "LH", "LW", "LBU", "LHU",
-        "SB", "SH", "SW"
+        "SB", "SH", "SW",
+        "BEQ", "BNE", "BLT", "BGE", "BLTU", "BGEU"
     };
 
 
@@ -87,6 +89,13 @@ private:
     bool executeSH(Core *core);
     bool executeSW(Core *core);
             /* !!!TO DO:!!! */
+    bool executeBEQ(Core *core);
+    bool executeBNE(Core *core);
+    bool executeBLT(Core *core);
+    bool executeBGE(Core *core);
+    bool executeBLTU(Core *core);
+    bool executeBGEU(Core *core);
+    
     bool executeBRANCH(Core *core);
     bool executeLOAD(Core *core);
     bool executeSTORE(Core *core);
