@@ -64,11 +64,48 @@ const size_t MEM_SIZE = 8192 * 32;
 const size_t REGS_NUMBER = 32;
 const size_t InstructionSize = 1;
 
+class Memory final
+{
+private:
+    char mem_[MEM_SIZE] = {};
+
+public:
+
+    bool write (uint32_t addr, uint32_t value, size_t size);
+    bool read (uint32_t addr,  uint32_t * value, size_t size);
+};
+
+bool Memory::write (uint32_t addr, uint32_t value, size_t size)
+{
+    if (addr + size > MEM_SIZE)
+    {
+        std::cout << "FAIL addr + size > MEM_SIZE: " << unsigned(addr) << " + " << unsigned(size) << " > " << unsigned(MEM_SIZE) << std::endl;
+        return false;
+    }
+
+    std::memcpy(mem_ + addr, &value, size);
+    return true;
+};
+
+bool Memory::read (uint32_t addr, uint32_t * value, size_t size)
+{
+    if (addr + size > MEM_SIZE)
+    {
+        std::cout << "FAIL addr + size > MEM_SIZE: " << unsigned(addr) << " + " << unsigned(size) << " > " << unsigned(MEM_SIZE) << std::endl;
+        return false;
+    }
+
+    std::memcpy(value, mem_ + addr, size);
+    return true;
+}
+
+
+
 class Core final
 {
 private:
 
-    char mem_[MEM_SIZE] = {};
+    Memory * mem;
     uint32_t regs_[REGS_NUMBER] = {};
 
     uint32_t pc_ = 0;
