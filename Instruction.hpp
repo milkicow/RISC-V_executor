@@ -95,7 +95,7 @@ private:
     bool executeBGE(Core *core);
     bool executeBLTU(Core *core);
     bool executeBGEU(Core *core);
-    
+
     bool executeBRANCH(Core *core);
     bool executeLOAD(Core *core);
     bool executeSTORE(Core *core);

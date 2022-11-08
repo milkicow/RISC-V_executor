@@ -223,9 +223,8 @@ Instruction::Instruction(Core *core, uint32_t code)
     {   
         inst_tp_ = JAL;
         rd_ = static_cast<RegId> (get_bits(code, 11, 7));
-
         imm_ = (get_bits(code, 31, 31) << 20) + (get_bits(code, 30, 21) << 1) + (get_bits(code, 20, 20) << 11) + (get_bits(code, 19, 12) << 12);
-
+        std::cout << "IN JAL: imm_ = " << imm_ << std::endl;
         exec_status_ = Instruction::executeJAL(core);
         break;
     }
@@ -492,7 +491,6 @@ bool Instruction::executeJAL(Core *core)
 {
     core->SetReg(rd_, core->GetNextPc());
     core->branch(core->GetPc() + imm_);
-
     return true;
 };
 
@@ -611,7 +609,7 @@ bool Instruction::executeBGEU(Core * core)
 uint32_t Instruction::get_bits(uint32_t code, size_t head, size_t tail)
 {
     const size_t MAX_BITS_INSTR = 32;
-    assert(head > tail);
+    assert(head >= tail);
     assert(MAX_BITS_INSTR > head);
 
     return ((code << (MAX_BITS_INSTR - head - 1)) >> (MAX_BITS_INSTR - head + tail - 1));

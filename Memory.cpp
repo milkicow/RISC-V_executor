@@ -22,4 +22,12 @@ bool Memory::read (uint32_t addr, uint32_t * value, size_t size)
 
     std::memcpy(value, mem_ + addr, size);
     return true;
-}
+};
+
+void Memory::DumpMem()
+{
+    for (int i = 0; i < MEM_SIZE; i++)
+    {
+        std::cout << mem_[i];
+    }
+};

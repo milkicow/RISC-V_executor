@@ -20,14 +20,15 @@ public: /*       !!!  WORK WITH STREAM OF COMMANDS UINT32_T BECAUSE OF THAT NEXT
     void SetReg (RegId id, uint32_t value) { regs_[id] = value; }
     uint32_t GetReg (RegId id) { return regs_[id]; }
     uint32_t GetPc () { return pc_; }
-    uint32_t GetNextPc () { return pc_ + 1; };
-    void branch (uint32_t target) { next_pc_ = target; }
+    uint32_t GetNextPc () { return next_pc_; };
+    void branch (uint32_t target) { 
+        next_pc_ = target; 
+    }
     void IncPc () {
-        pc_ += InstructionSize;
-        next_pc_ += InstructionSize;
+        pc_ += InstructionSize; // += 4 on char
     }
     void Dump ();
-    
+
     bool write (uint32_t addr, uint32_t value, size_t size) { return mem->write(addr, value, size); }
     bool read (uint32_t addr, uint32_t * value, size_t size) { return mem->read(addr, value, size); }
 

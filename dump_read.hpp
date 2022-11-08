@@ -59,9 +59,9 @@ std::vector<char> read(std::string filename) {
 
 void correct_file(std::vector<std::string> stream) {
     std::string correct_type = "test_prog.out:     file format elf32-littleriscv";
-    LOX
+     
     if (correct_type != *stream.begin()) {
-        LOX
+         
         std::cout << "TYPE OF THE FILE IS NOT CORRECT!" << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -81,15 +81,15 @@ bool find(std::string find, std::string source) {
 std::vector<uint32_t> getcommands(std::vector<std::string>& stream) {
 
     std::fstream log_file("logfile.txt", std::ios_base::app);
-    LOX
+     
     correct_file(stream);
-    LOX
+     
     auto stream_ptr = stream.begin();
     
     while (!find("<>", *stream_ptr)) ++stream_ptr;
     ++stream_ptr;    
     
-    LOX
+     
 
     std::vector<uint32_t> commands;
     int address;
@@ -97,7 +97,7 @@ std::vector<uint32_t> getcommands(std::vector<std::string>& stream) {
     uint32_t command;
     
     while (stream_ptr != stream.end()) {
-        LOX
+         
         std::stringstream ss(*stream_ptr);
 
         ss >> std::hex >> std::noshowbase >> address >> separation >> std::hex >> std::noshowbase >> command;
@@ -113,9 +113,44 @@ std::vector<uint32_t> getcommands(std::vector<std::string>& stream) {
     return commands;
 }
 
-void pasring(char * mem_)
-{
+void pasring(char * mem_, std::vector<std::string>& stream)
+{   
+    std::fstream log_file("logfile.txt", std::ios_base::app);
+     
+    correct_file(stream);
+     
+    auto stream_ptr = stream.begin();
     
+    while (!find("<>", *stream_ptr)) ++stream_ptr;
+    ++stream_ptr; 
+
+    char ch;
+    int mem_ptr = 0;
+    std::string str;
+    while (stream_ptr != stream.end())
+    {   
+        str = *stream_ptr;
+        auto str_ptr = str.begin();
+
+        for (; *str_ptr != ':'; ++str_ptr) {}
+        ++str_ptr;
+        while ((*str_ptr == ' ' || *str_ptr == '\t')) 
+        {   
+            ++str_ptr;
+        }
+
+        if (str_ptr != str.end()) 
+        {
+            for (int i = mem_ptr; i != mem_ptr + 8; ++i)
+            {   
+                mem_[i] = *str_ptr;
+                ++str_ptr;
+            }
+            mem_ptr += 8;
+        }
+        ++stream_ptr;
+    }
+
 }
 
 }

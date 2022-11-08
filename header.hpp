@@ -21,6 +21,9 @@
 
     // need to do:
     // char memory + normal exe function + test functions + work with addresses
+
+    // do normal dirs and cmake
+    // check how jump func works ( by bits )
 /* ----------------------------------------- -------- -----------------------------------------*/
 
 #include "libs.hpp"
@@ -38,12 +41,13 @@ void execute(std::vector<uint32_t> commands, Core *core)
     {   
         Instruction inst (core, commands[core->GetPc()]);
         inst.Dump();
+        core->Dump();
         status = inst.GetExexStatus();
     
         core->IncPc();
         core->SetReg(R00, 0); // must equal 0
 
-        core->Dump();
+    
     }
 }
 
