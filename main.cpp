@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     /* Load in memory */
     Memory mem = {};
 
-    pars::pasring(mem.GetMemAddr(), stream);
+    pars::parsing(mem.GetMemAddr(), stream);
     // auto mem_addr = 0;
     // auto commands_ptr = commands.begin();
     // while (commands_ptr != commands.end())

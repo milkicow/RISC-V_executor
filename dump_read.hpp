@@ -113,7 +113,7 @@ std::vector<uint32_t> getcommands(std::vector<std::string>& stream) {
     return commands;
 }
 
-void pasring(char * mem_, std::vector<std::string>& stream)
+void parsing(char * mem_, std::vector<std::string>& stream)
 {   
     std::fstream log_file("logfile.txt", std::ios_base::app);
      
