@@ -6,9 +6,10 @@
 class Memory final
 {
 private:
-    char mem_[MEM_SIZE] = {};
+    // char mem_[MEM_SIZE] = {0};
 
 public:
+    char mem_[MEM_SIZE] = {0};
     char * GetMemAddr () { return mem_; }
     void DumpMem();
     bool write (uint32_t addr, uint32_t value, size_t size);

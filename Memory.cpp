@@ -8,7 +8,8 @@ bool Memory::write (uint32_t addr, uint32_t value, size_t size)
         return false;
     }
 
-    std::memcpy(mem_ + addr, &value, size);
+    //std::memcpy(mem_ + addr, &value, size);
+    memcpy(&mem_[addr], &value, size);
     return true;
 };
 
@@ -20,14 +21,18 @@ bool Memory::read (uint32_t addr, uint32_t * value, size_t size)
         return false;
     }
 
-    std::memcpy(value, mem_ + addr, size);
+    //std::memcpy(value, mem_ + addr, size);
+    memcpy(value, &mem_[addr], size);
+    //std::cout << "value in read func = " << std::hex << *value << std::endl;
     return true;
 };
 
 void Memory::DumpMem()
 {
     for (int i = 0; i < MEM_SIZE; i++)
-    {
-        std::cout << mem_[i];
+    {   
+        if (mem_[i] != 0)
+            printf("%02x", mem_[i]);
     }
+    std::cout << std::endl;
 };

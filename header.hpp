@@ -24,6 +24,8 @@
 
     // do normal dirs and cmake
     // check how jump func works ( by bits )
+
+    // now segfault on mem.write() check it 
 /* ----------------------------------------- -------- -----------------------------------------*/
 
 #include "libs.hpp"
@@ -33,22 +35,69 @@
 
 void ClearFile(std::string filename);
 
-void execute(std::vector<uint32_t> commands, Core *core)
-{   
+// void execute(std::vector<uint32_t> commands, Core *core)
+// {   
+//     bool status = true;
+
+//     while (status)
+//     {   
+//         Instruction inst (core, commands[core->GetPc()]);
+//         inst.Dump();
+//         core->Dump();
+//         status = inst.GetExexStatus();
+    
+//         core->IncPc();
+//         core->SetReg(R00, 0); // must equal 0
+
+    
+//     }
+// }
+
+bool execute(Memory * mem, Core * core)
+{
     bool status = true;
-
     while (status)
-    {   
-        Instruction inst (core, commands[core->GetPc()]);
-        inst.Dump();
-        core->Dump();
-        status = inst.GetExexStatus();
-    
-        core->IncPc();
-        core->SetReg(R00, 0); // must equal 0
+    {
+        uint32_t undecoded_inst;
 
-    
+        if (!mem->read(core->GetPc(), &undecoded_inst, 4)) 
+        {
+            status = false;
+            break;
+        }
+        if (undecoded_inst == 0) 
+        {
+            status = false;
+            break;
+        }
+
+        std::cout << "PC = " << core->GetPc() << std::endl;
+        std::cout << "undecoded inst = " << std::hex << undecoded_inst << std::endl;
+
+        //printf("mem_ addr = %p\n", mem->GetMemAddr());
+        //std::cout << "mem_ addr = " << mem->GetMemAddr() << std::endl;
+        //std::cout << "undecoded inst addr = " << &undecoded_inst << std::endl;
+        //std::cout << "mem[core->GetPc()] = " << mem->mem_[core->GetPc()] << std::endl;
+        //printf("&mem[core->GetPc()] = %p \n", &mem[core->GetPc()]);
+
+        LOX
+        core->SetNextPc(core->GetPc() + 4);
+        LOX
+        Instruction inst(core, undecoded_inst);
+        LOX
+
+        if (inst.GetExexStatus() == false)
+        {
+            std::cout << "EXECUTION WAS FAILED!!! \n";
+            status = false;
+            break;
+        }
+
+        core->SetPc(core->GetNextPc());
+        core->SetReg(R00, 0);
     }
+
+    return status;
 }
 
 void ClearFile(std::string filename)

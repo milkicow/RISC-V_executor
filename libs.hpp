@@ -10,7 +10,7 @@
 // #undef LOX
 // #define LOX 
 
-const size_t MEM_SIZE = 8192 * 32;
+const size_t MEM_SIZE = 8192;
 const size_t REGS_NUMBER = 32;
 const size_t InstructionSize = 1;
 

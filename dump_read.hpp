@@ -5,6 +5,8 @@
 #include <vector>
 #include <sstream>
 
+#include <ctype.h>
+
 namespace pars {
 
 void delete_symbols(std::string& string);
@@ -113,6 +115,13 @@ std::vector<uint32_t> getcommands(std::vector<std::string>& stream) {
     return commands;
 }
 
+unsigned char turn_into_number(char num)
+{
+    assert(isdigit(num) || num >= 'a' && num <= 'f');
+
+    return (isdigit(num)) ? (num - '0') : (num - 'a' + 10);
+}
+
 void parsing(char * mem_, std::vector<std::string>& stream)
 {   
     std::fstream log_file("logfile.txt", std::ios_base::app);
@@ -141,12 +150,14 @@ void parsing(char * mem_, std::vector<std::string>& stream)
 
         if (str_ptr != str.end()) 
         {
-            for (int i = mem_ptr; i != mem_ptr + 8; ++i)
+            for (int i = 0; i != 4; ++i)
             {   
-                mem_[i] = *str_ptr;
-                ++str_ptr;
+                mem_[mem_ptr + 3 - i] = (turn_into_number(str_ptr[0]) << 4) + turn_into_number(str_ptr[1]);
+                // char == symbol
+
+                str_ptr += 2;
             }
-            mem_ptr += 8;
+            mem_ptr += 4;
         }
         ++stream_ptr;
     }

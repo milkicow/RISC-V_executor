@@ -228,8 +228,9 @@ Instruction::Instruction(Core *core, uint32_t code)
         exec_status_ = Instruction::executeJAL(core);
         break;
     }
-    case 0b01000011: // SB, SH, SW
+    case 0b00100011: // SB, SH, SW
     {   
+        LOX
         rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
         rs2_ = static_cast<RegId> (get_bits(code, 24, 20));
 
@@ -238,16 +239,19 @@ Instruction::Instruction(Core *core, uint32_t code)
 
         if (funct3 == 0b000) // SB
         {   
+            LOX  
             inst_tp_ = SB;
             exec_status_ = Instruction::executeSB(core);
         }
         else if (funct3 == 0b001) // SH
-        {
+        {   
+            LOX
             inst_tp_ = SH;
             exec_status_ = Instruction::executeSH(core);
         }
         else if (funct3 == 0b010) // SW
-        {
+        {   
+            LOX
             inst_tp_ = SW;
             exec_status_ = Instruction::executeSW(core);
         }
@@ -495,9 +499,15 @@ bool Instruction::executeJAL(Core *core)
 };
 
 bool Instruction::executeJALR(Core *core)
-{
-    core->SetReg(rd_, core->GetNextPc());
+{   
+    std::cout << "before: " << std::endl;
+    std::cout << "pc_ = " << core->GetPc() << " imm_ = " << imm_ << std::endl;
+    std::cout << "next_pc_ = " << core->GetNextPc() << std::endl;
+    core->SetReg(rd_, core->GetPc() + 4);
     core->branch((core->GetReg(rs1_) + imm_ ) & (0xFFFFFFFE));
+    std::cout << "after: " << std::endl;
+    std::cout << "pc_ = " << core->GetPc() << " imm_ = " << imm_ << std::endl;
+    std::cout << "next_pc_ = " << core->GetNextPc() << std::endl;
 
     return true;
 };
@@ -559,7 +569,11 @@ bool Instruction::executeSH(Core *core)
 
 bool Instruction::executeSW(Core *core)
 {
+    LOX
+    std::cout << "rs1_ = " << rs1_ << " imm_ = " << imm_ << std::endl;
+    std::cout << "core->GetReg(rs1_) = " << core->GetReg(rs1_) << std::endl;
     core->write(core->GetReg(rs1_) + imm_, core->GetReg(rs2_), 4);
+    LOX
     return true;
 };
 

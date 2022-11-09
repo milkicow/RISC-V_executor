@@ -30,11 +30,16 @@ int main(int argc, char *argv[]) {
     //     mem_addr += 4;
     //     commands_ptr++;
     // }
-
-    mem.DumpMem();
-
-
     
+    mem.DumpMem();
+    // uint32_t value = 0x00112e23;
+    // mem.write(0, value, 4);
+    // mem.DumpMem();
+
+    Core core = {};
+    execute(&mem, &core);
+
+
     // std::cout << "vector of commands: " << std::endl;
     // for (auto ptr = commands.begin(); ptr != commands.end(); ++ptr) {
         
