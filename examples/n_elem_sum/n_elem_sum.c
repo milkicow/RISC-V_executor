@@ -9,11 +9,11 @@ int main()
         array[i] = i;
     }
 
-    int summ = 0;
+    int sum = 0;
 
     for (int i = 0; i < ARRAY_SIZE; i++)
     {
-        summ += array[i];
+        sum += array[i];
     }
 
     return 0;
