@@ -71,7 +71,6 @@ private:
     bool executeSRL(Core *core);
     bool executeSUB(Core *core);
     bool executeSRA(Core *core);
-
     bool executeADDI(Core *core);
     bool executeSLTI(Core *core);
     bool executeSLTIU(Core * core);
@@ -88,17 +87,12 @@ private:
     bool executeSB(Core *core);
     bool executeSH(Core *core);
     bool executeSW(Core *core);
-            /* !!!TO DO:!!! */
     bool executeBEQ(Core *core);
     bool executeBNE(Core *core);
     bool executeBLT(Core *core);
     bool executeBGE(Core *core);
     bool executeBLTU(Core *core);
     bool executeBGEU(Core *core);
-
-    bool executeBRANCH(Core *core);
-    bool executeLOAD(Core *core);
-    bool executeSTORE(Core *core);
 
 public:
 
@@ -114,9 +108,6 @@ public:
     }
     Instruction(Core *core, uint32_t code);
     bool GetExexStatus() { return exec_status_; }
-
-    /* execute sth */
-
 };
 
 #endif

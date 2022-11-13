@@ -7,8 +7,8 @@
 #include <iomanip>
 
 #define LOX printf("NORMALLY IN %s in %s in LINE = %d \n", __FILE__, __PRETTY_FUNCTION__, __LINE__);
-// #undef LOX
-// #define LOX 
+#undef LOX
+#define LOX 
 
 const size_t MEM_SIZE = 8192 * 32;
 const size_t REGS_NUMBER = 32;

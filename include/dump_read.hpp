@@ -153,7 +153,6 @@ void parsing(char * mem_, std::vector<std::string>& stream)
             for (int i = 0; i != 4; ++i)
             {   
                 mem_[mem_ptr + 3 - i] = (turn_into_number(str_ptr[0]) << 4) + turn_into_number(str_ptr[1]);
-                // char == symbol
 
                 str_ptr += 2;
             }

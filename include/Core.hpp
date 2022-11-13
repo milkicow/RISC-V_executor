@@ -15,7 +15,7 @@ private:
     uint32_t next_pc_ = 0;
 
 
-public: /*       !!!  WORK WITH STREAM OF COMMANDS UINT32_T BECAUSE OF THAT NEXT_PC_ == PC_ + 1  !!!   and do not work with jumps (as i understand)      */
+public:
 
     Core(Memory * mem) : mem_(mem) {}
     void SetReg (RegId id, uint32_t value) { regs_[id] = value; }
@@ -28,7 +28,7 @@ public: /*       !!!  WORK WITH STREAM OF COMMANDS UINT32_T BECAUSE OF THAT NEXT
         next_pc_ = target; 
     }
     void IncPc () {
-        pc_ += InstructionSize; // += 4 on char
+        pc_ += InstructionSize;
     }
     void Dump ();
 
