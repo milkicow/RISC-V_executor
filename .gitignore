@@ -1,10 +1,7 @@
-*.out
 *.log
-*.out
 *.s
 *.o
 .vscode
 dump_read1.cpp
 build
 test_prog.dump
-logfile.txt
