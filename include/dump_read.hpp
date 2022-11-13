@@ -61,7 +61,8 @@ std::vector<char> read(std::string filename) {
 
 void correct_file(std::vector<std::string> stream) {
     std::string correct_type = "test_prog.out:     file format elf32-littleriscv";
-     
+    std::string in_str = *stream.begin();
+
     if (correct_type != *stream.begin()) {
          
         std::cout << "TYPE OF THE FILE IS NOT CORRECT!" << std::endl;
@@ -126,7 +127,7 @@ void parsing(char * mem_, std::vector<std::string>& stream)
 {   
     std::fstream log_file("logfile.txt", std::ios_base::app);
      
-    correct_file(stream);
+    //correct_file(stream);
      
     auto stream_ptr = stream.begin();
     
