@@ -42,4 +42,4 @@ cd build/bin
 ```
 
 ## Examples 
-You can see some program examples in eponymous directory
+You can see examples: first n elememts sum and factorial in eponymous directory
