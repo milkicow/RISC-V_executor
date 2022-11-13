@@ -236,7 +236,9 @@ Instruction::Instruction(Core *core, uint32_t code)
     {   
         inst_tp_ = JAL;
         rd_ = static_cast<RegId> (get_bits(code, 11, 7));
-        imm_ = (get_bits(code, 31, 31) << 20) + (get_bits(code, 30, 21) << 1) + (get_bits(code, 20, 20) << 11) + (get_bits(code, 19, 12) << 12);
+        imm_ = (get_bits((static_cast<int32_t>(code) >> 31), 31, 0) << 20) + (get_bits(code, 30, 21) << 1) + (get_bits(code, 20, 20) << 11) + (get_bits(code, 19, 12) << 12);
+        dump_bits(imm_, 31, 0);
+        std::cout << std::endl;
         std::cout << "IN JAL: imm_ = " << imm_ << std::endl;
         exec_status_ = Instruction::executeJAL(core);
         break;
@@ -530,7 +532,7 @@ bool Instruction::executeSRA(Core *core)
 
 bool Instruction::executeJAL(Core *core) 
 {
-    core->SetReg(rd_, core->GetNextPc());
+    core->SetReg(rd_, core->GetPc() + 4);
     core->branch(core->GetPc() + imm_);
     return true;
 };

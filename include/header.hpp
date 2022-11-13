@@ -75,7 +75,7 @@ bool execute(Memory * mem, Core * core)
             status = false;
             break;
         }
-        if (undecoded_inst == 0x00008067)
+        if (undecoded_inst == 0x00000001)
         {   
             std::cout << "END" << std::endl;
             exe_status = true;

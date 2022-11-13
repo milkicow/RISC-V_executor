@@ -41,12 +41,12 @@ int main(int argc, char *argv[]) {
 
     std::cout << "exe_status = " << exe_status << std::endl;
     
-    int place = 196563;
-    for (int i = 0; i < 4; ++i)
-    {   
-        std::cout << unsigned(mem.mem_[place]) << std::endl;
-        ++place;
-    }
+    // int place = 196563;
+    // for (int i = 0; i < 4; ++i)
+    // {   
+    //     std::cout << unsigned(mem.mem_[place]) << std::endl;
+    //     ++place;
+    // }
     // std::cout << "vector of commands: " << std::endl;
     // for (auto ptr = commands.begin(); ptr != commands.end(); ++ptr) {
         
