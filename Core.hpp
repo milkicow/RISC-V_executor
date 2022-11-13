@@ -8,7 +8,7 @@ class Core final
 {
 private:
 
-    Memory * mem;
+    Memory * mem_;
     uint32_t regs_[REGS_NUMBER] = {};
 
     uint32_t pc_ = 0;
@@ -17,6 +17,7 @@ private:
 
 public: /*       !!!  WORK WITH STREAM OF COMMANDS UINT32_T BECAUSE OF THAT NEXT_PC_ == PC_ + 1  !!!   and do not work with jumps (as i understand)      */
 
+    Core(Memory * mem) : mem_(mem) {}
     void SetReg (RegId id, uint32_t value) { regs_[id] = value; }
     void SetPc (uint32_t pc) { pc_ = pc; }
     void SetNextPc (uint32_t next_pc) { next_pc_ = next_pc; }
@@ -31,8 +32,8 @@ public: /*       !!!  WORK WITH STREAM OF COMMANDS UINT32_T BECAUSE OF THAT NEXT
     }
     void Dump ();
 
-    bool write (uint32_t addr, uint32_t value, size_t size) { return mem->write(addr, value, size); }
-    bool read (uint32_t addr, uint32_t * value, size_t size) { return mem->read(addr, value, size); }
+    bool write (uint32_t addr, uint32_t value, size_t size) { return mem_->write(addr, value, size); }
+    bool read (uint32_t addr, uint32_t * value, size_t size) { return mem_->read(addr, value, size); }
 
 };
 

@@ -26,6 +26,8 @@
     // check how jump func works ( by bits )
 
     // now segfault on mem.write() check it 
+
+    // seems like bad work on bge 
 /* ----------------------------------------- -------- -----------------------------------------*/
 
 #include "libs.hpp"
@@ -56,6 +58,9 @@ void ClearFile(std::string filename);
 bool execute(Memory * mem, Core * core)
 {
     bool status = true;
+    bool exe_status = false;
+
+    core->SetReg(SP, 8192 * 24 - 21); 
     while (status)
     {
         uint32_t undecoded_inst;
@@ -70,23 +75,24 @@ bool execute(Memory * mem, Core * core)
             status = false;
             break;
         }
+        if (undecoded_inst == 0x00008067)
+        {   
+            std::cout << "END" << std::endl;
+            exe_status = true;
+            break;
+        }
 
         std::cout << "PC = " << core->GetPc() << std::endl;
         std::cout << "undecoded inst = " << std::hex << undecoded_inst << std::endl;
 
-        //printf("mem_ addr = %p\n", mem->GetMemAddr());
-        //std::cout << "mem_ addr = " << mem->GetMemAddr() << std::endl;
-        //std::cout << "undecoded inst addr = " << &undecoded_inst << std::endl;
-        //std::cout << "mem[core->GetPc()] = " << mem->mem_[core->GetPc()] << std::endl;
-        //printf("&mem[core->GetPc()] = %p \n", &mem[core->GetPc()]);
-
-        LOX
         core->SetNextPc(core->GetPc() + 4);
-        LOX
         Instruction inst(core, undecoded_inst);
-        LOX
 
-        if (inst.GetExexStatus() == false)
+        inst.Dump();
+        core->Dump();
+
+        exe_status = inst.GetExexStatus();
+        if (exe_status == false)
         {
             std::cout << "EXECUTION WAS FAILED!!! \n";
             status = false;
@@ -97,7 +103,7 @@ bool execute(Memory * mem, Core * core)
         core->SetReg(R00, 0);
     }
 
-    return status;
+    return exe_status;
 }
 
 void ClearFile(std::string filename)

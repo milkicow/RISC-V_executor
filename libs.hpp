@@ -10,9 +10,9 @@
 // #undef LOX
 // #define LOX 
 
-const size_t MEM_SIZE = 8192;
+const size_t MEM_SIZE = 8192 * 32;
 const size_t REGS_NUMBER = 32;
-const size_t InstructionSize = 1;
+const size_t InstructionSize = 4;
 
 enum types
 {
@@ -22,5 +22,6 @@ enum types
 enum RegId
 {
     R00, R01, R02, R03, R04, R05, R06, R07, R08, R09, R0A, R0B, R0C, R0D, R0E, ROF,
-    R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R1A, R1B, R1C, R1D, R1E, R1F
+    R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R1A, R1B, R1C, R1D, R1E, R1F,
+    SP = 2
 };

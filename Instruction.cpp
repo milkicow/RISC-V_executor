@@ -5,6 +5,9 @@ Instruction::Instruction(Core *core, uint32_t code)
     inst_tp_ = ERROR;
     uint32_t type = code & 0x7F;
 
+    std::cout << "code = "; 
+    dump_bits(code, 31, 25); std::cout << " "; dump_bits(code, 24, 20); std::cout << " "; dump_bits(code, 19, 15); std::cout << " "; dump_bits(code, 14, 12); std::cout << " "; dump_bits(code, 11, 7); std::cout << " "; dump_bits(code, 6, 0); std::cout << std::endl;
+
     switch (type)
     {
     case 0:
@@ -16,7 +19,8 @@ Instruction::Instruction(Core *core, uint32_t code)
     {
         rd_ = static_cast<RegId> (get_bits(code, 11, 7));
         rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
-        imm_ = static_cast<int32_t> (get_bits(static_cast<int32_t> (code), 31, 20));
+        imm_ = get_bits((static_cast<int32_t>(code) >> 20), 31, 0);
+        //imm_ = static_cast<int32_t> (get_bits(static_cast<int32_t> (code), 31, 20));
         
         auto funct3 = get_bits(code, 14, 12);
 
@@ -81,22 +85,28 @@ Instruction::Instruction(Core *core, uint32_t code)
     {   
         rd_ = static_cast<RegId> (get_bits(code, 11, 7));
         rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
-        imm_ = static_cast<int32_t> (get_bits(static_cast<int32_t> (code), 31, 20));
+        imm_ = get_bits((static_cast<int32_t>(code) >> 20), 31, 0);
+        //imm_ = static_cast<int32_t> (get_bits(static_cast<int32_t> (code), 31, 20));
+        //get_bits((static_cast<int32_t>(code) >> 31), 31, 0) << 12
+        std::cout << "dump_bits = ";
+        dump_bits(imm_, 31, 0);
+        std::cout << std::endl;
         
         auto funct3 = get_bits(code, 14, 12);
         auto funct7 = get_bits(imm_, 11, 5);
+
 
         if (funct3 == 0b000) // ADDI
         {
             inst_tp_ = ADDI;
             exec_status_ = Instruction::executeADDI(core);
         }
-        else if (funct3 == 0b001) // SLTI
+        else if (funct3 == 0b010) // SLTI
         {
             inst_tp_ = SLTI;
             exec_status_ = Instruction::executeSLTI(core);
         }
-        else if (funct3 == 0b010) // SLTIU
+        else if (funct3 == 0b011) // SLTIU
         {
             inst_tp_ = SLTIU;
             exec_status_ = Instruction::executeSLTIU(core);
@@ -145,7 +155,6 @@ Instruction::Instruction(Core *core, uint32_t code)
         rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
         rs2_ = static_cast<RegId> (get_bits(code, 24, 20));
 
-        //std::cout << "rd_ = " << rd_ << " rs1_ = " << rs1_ << " rs2_ = " << rs2_ << std::endl;
 
         auto funct3 = get_bits(code, 14, 12);
         auto funct7 = get_bits(code, 31, 25);
@@ -211,12 +220,16 @@ Instruction::Instruction(Core *core, uint32_t code)
     case 0b1100111: // JALR
     {
         // take param!!!
-        inst_tp_ = JALR;
         rd_ = static_cast<RegId> (get_bits(code, 11, 7));
         rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
         imm_ = get_bits(static_cast<int32_t>(code) >> 20 , 11, 0);
+        auto funct3 = get_bits(code, 14, 12);
 
-        exec_status_ = Instruction::executeJALR(core);
+        if(funct3 == 0b000) 
+        {
+            inst_tp_ = JALR;
+            exec_status_ = Instruction::executeJALR(core);
+        }
         break;
     }
     case 0b1101111: // JAL
@@ -230,28 +243,33 @@ Instruction::Instruction(Core *core, uint32_t code)
     }
     case 0b00100011: // SB, SH, SW
     {   
-        LOX
+         
         rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
         rs2_ = static_cast<RegId> (get_bits(code, 24, 20));
 
-        imm_ = (get_bits(static_cast<int32_t>(code), 31, 25) << 5) + get_bits(code, 11, 7);
+        //imm_ = (get_bits(static_cast<int32_t>(code), 31, 25) << 5) + get_bits(code, 11, 7);
+        imm_ = (get_bits((static_cast<int32_t>(code) >> 25), 31, 0) << 5) + get_bits(code, 11, 7);
+        std::cout << "imm = ";
+        dump_bits(imm_, 31, 0);
+        std::cout << std::endl;
+
         auto funct3 = get_bits(code, 14, 12);
 
         if (funct3 == 0b000) // SB
         {   
-            LOX  
+               
             inst_tp_ = SB;
             exec_status_ = Instruction::executeSB(core);
         }
         else if (funct3 == 0b001) // SH
         {   
-            LOX
+             
             inst_tp_ = SH;
             exec_status_ = Instruction::executeSH(core);
         }
         else if (funct3 == 0b010) // SW
         {   
-            LOX
+             
             inst_tp_ = SW;
             exec_status_ = Instruction::executeSW(core);
         }
@@ -268,7 +286,13 @@ Instruction::Instruction(Core *core, uint32_t code)
         rs1_ = static_cast<RegId> (get_bits(code, 19, 15));
         rs2_ = static_cast<RegId> (get_bits(code, 24, 20));
 
-        imm_ = (get_bits(code, 30, 25) << 5) + (get_bits(code, 11, 8) << 1) + (get_bits(code, 7, 7) << 11) + (get_bits(static_cast<int32_t>(code), 31, 31) << 12);
+        imm_ = (get_bits(code, 11, 8) << 1) + (get_bits(code, 7, 7) << 11) + (get_bits(code, 30, 25) << 5) + (get_bits((static_cast<int32_t>(code) >> 31), 31, 0) << 12);
+        dump_bits(imm_, 31, 0);
+        std::cout << std::endl;
+
+        // imm_ = get_bits((static_cast<int32_t>(code) >> 31), 0, 0) << 12;
+        // dump_bits(imm_, 31, 0);
+        // std::cout << std::endl;
 
         auto funct3 = get_bits(code, 14, 12);
         if (funct3 == 0b000) // BEQ
@@ -279,7 +303,7 @@ Instruction::Instruction(Core *core, uint32_t code)
         else if (funct3 == 0b001) // BNE
         {
             inst_tp_ = BNE;
-            exec_status_ = executeBEQ(core);
+            exec_status_ = executeBNE(core);
         }
         else if (funct3 == 0b100) // BLT
         {
@@ -293,11 +317,15 @@ Instruction::Instruction(Core *core, uint32_t code)
         }
         else if (funct3 == 0b110) // BLTU
         {
+            imm_ = (get_bits(code, 11, 8) << 1) + (get_bits(code, 7, 7) << 11) + (get_bits(code, 30, 25) << 5) + (get_bits(code >> 31, 0, 0) << 12);
+
             inst_tp_ = BLTU;
             exec_status_ = executeBLTU(core);
         }
         else if (funct3 == 0b111) // BGEU
-        {
+        {   
+            imm_ = (get_bits(code, 11, 8) << 1) + (get_bits(code, 7, 7) << 11) + (get_bits(code, 30, 25) << 5) + (get_bits(code >> 31, 0, 0) << 12);
+
             inst_tp_ = BGEU;
             exec_status_ = executeBGEU(core);
         } 
@@ -306,8 +334,10 @@ Instruction::Instruction(Core *core, uint32_t code)
             std::cout << "no match with command = " << code << std::endl;
             exit(EXIT_FAILURE);
         }
+        break;
     }
     default:
+        std::cout << "default case:\n";
         std::cout << "no match with opcode = " << unsigned(type) << std::endl;
         exit(EXIT_FAILURE);
 
@@ -336,13 +366,19 @@ bool Instruction::executeLUI(Core *core)
 /*  I-type  */
 //-------------------------------------------//
 bool Instruction::executeADDI(Core *core)
-{
+{   
+    std::cout << "before addi:\n";
+    std::cout << "rs1_ = " << rs1_ << " imm_ " << signed(imm_) << " rd_ = " << rd_ << std::endl;
     core->SetReg(rd_, core->GetReg(rs1_) + imm_);
+
+    std::cout << "after addi:\n";
+    std::cout << "reg[rd_] = " << core->GetReg(rd_) << std::endl << std::endl; 
     return true;
 };
 
 bool Instruction::executeSLTI(Core *core)
-{
+{   
+    std::cout << "SLTI\n";
     if (static_cast<int32_t>(core->GetReg(rs1_)) < static_cast<int32_t>(imm_))
     {
         core->SetReg(rd_, 1);
@@ -386,7 +422,8 @@ bool Instruction::executeXORI(Core *core)
 };
 
 bool Instruction::executeSLLI(Core *core)
-{
+{   
+    std::cout << "SLLI\n";
     core->SetReg(rd_, core->GetReg(rs1_) << imm_);
     return true;
 };
@@ -569,18 +606,21 @@ bool Instruction::executeSH(Core *core)
 
 bool Instruction::executeSW(Core *core)
 {
-    LOX
-    std::cout << "rs1_ = " << rs1_ << " imm_ = " << imm_ << std::endl;
+     
+    std::cout << "rs1_ = " << rs1_ << " rs2_ = " << rs2_ << " imm_ = " << imm_ << std::endl;
     std::cout << "core->GetReg(rs1_) = " << core->GetReg(rs1_) << std::endl;
     core->write(core->GetReg(rs1_) + imm_, core->GetReg(rs2_), 4);
-    LOX
+     
     return true;
 };
 
 bool Instruction::executeBEQ(Core * core)
 {
     if (core->GetReg(rs1_) == core->GetReg(rs2_))
+    {
+        std::cout << core->GetReg(rs1_) << "==" << core->GetReg(rs2_) << std::endl;
         core->branch(core->GetPc() + imm_); 
+    }
     return true;
 };
 
@@ -627,6 +667,20 @@ uint32_t Instruction::get_bits(uint32_t code, size_t head, size_t tail)
     assert(MAX_BITS_INSTR > head);
 
     return ((code << (MAX_BITS_INSTR - head - 1)) >> (MAX_BITS_INSTR - head + tail - 1));
+}
+
+void Instruction::dump_bits(uint32_t code, size_t head, size_t tail)
+{
+    const size_t MAX_BITS_INSTR = 32;
+    assert(head >= tail);
+    assert(MAX_BITS_INSTR > head);
+
+    uint32_t bits = get_bits(code, head, tail);
+    for (int i = head - tail; i >= 0; --i)
+    {
+        std::cout << (int)((bits >> i) & 1);
+    }
+    //std::cout << std::endl;
 }
 
 // template<int head, int tail, class T = uint32_t>

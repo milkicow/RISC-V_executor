@@ -36,10 +36,17 @@ int main(int argc, char *argv[]) {
     // mem.write(0, value, 4);
     // mem.DumpMem();
 
-    Core core = {};
-    execute(&mem, &core);
+    Core core(&mem);
+    bool exe_status = execute(&mem, &core);
 
-
+    std::cout << "exe_status = " << exe_status << std::endl;
+    
+    int place = 196563;
+    for (int i = 0; i < 4; ++i)
+    {   
+        std::cout << unsigned(mem.mem_[place]) << std::endl;
+        ++place;
+    }
     // std::cout << "vector of commands: " << std::endl;
     // for (auto ptr = commands.begin(); ptr != commands.end(); ++ptr) {
         

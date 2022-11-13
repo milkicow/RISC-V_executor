@@ -103,12 +103,13 @@ private:
 public:
 
     uint32_t get_bits(uint32_t code, size_t head, size_t tail);
+    void dump_bits(uint32_t, size_t head, size_t tail);
     void Dump()
     {   
         std::fstream log_file("logfile.txt", std::ios_base::app);
         log_file << "instruction " << InstIdName[inst_tp_] << " : "<< std::endl;
         log_file << " rd_ = " << rd_ << " rs1_ = " << rs1_ << " rs2_ = " << rs2_ << std::endl;
-        log_file << " imm_ = " << imm_ << std::endl;
+        log_file << " imm_ = " << std::dec << imm_ << std::endl;
         log_file.close();
     }
     Instruction(Core *core, uint32_t code);
