@@ -10,7 +10,7 @@ bool execute(Memory * mem, Core * core)
     bool status = true;
     bool exe_status = false;
 
-    core->SetReg(SP, 8192 * 24 - 21); 
+    core->SetReg(SP, 0x090000); 
     while (status)
     {
         uint32_t undecoded_inst;
