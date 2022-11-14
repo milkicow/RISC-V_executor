@@ -1,6 +1,8 @@
 # RISC-V_executor
 My implementation of RISC-V interpreter that can execute commands from elf file
 
+All commands for RISC32I are avaliable except ECALL, EBREAK and FENCE instructions
+
 ## Requirements
   1. RISC-V compiler for creating elf-file
   2. g++
