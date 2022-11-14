@@ -43,4 +43,4 @@ Disassembly of section .text:
    10100:	00078513          	mv	a0,a5
    10104:	04c12403          	lw	s0,76(sp)
    10108:	05010113          	addi	sp,sp,80
-   1010c:	00000001          	ret
+   1010c:	00008067          	ret

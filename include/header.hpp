@@ -25,18 +25,19 @@ bool execute(Memory * mem, Core * core)
             status = false;
             break;
         }
-        if (undecoded_inst == 0x00000001)
-        {   
-            std::cout << "END" << std::endl;
-            exe_status = true;
-            break;
-        }
 
         std::cout << "PC = " << core->GetPc() << std::endl;
         std::cout << "undecoded inst = " << std::hex << undecoded_inst << std::endl;
 
         core->SetNextPc(core->GetPc() + 4);
         Instruction inst(core, undecoded_inst);
+
+        if (core->GetReg(R02) == 0x090000 && undecoded_inst == 0x00008067)
+        {   
+            std::cout << "END" << std::endl;
+            exe_status = true;
+            break;
+        }
 
         inst.Dump();
         core->Dump();

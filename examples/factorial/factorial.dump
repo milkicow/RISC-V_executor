@@ -16,7 +16,7 @@ Disassembly of section .text:
    10094:	00c12083          	lw	ra,12(sp)
    10098:	00812403          	lw	s0,8(sp)
    1009c:	01010113          	addi	sp,sp,16
-   100a0:	00000001          	ret
+   100a0:	00008067          	ret
 
 000100a4 <mul>:
    100a4:	fd010113          	addi	sp,sp,-48
