@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     mem.DumpMem();
 
     Core core(&mem);
-    bool exe_status = execute(&mem, &core);
+    bool exe_status = core.execute(&mem);
 
     std::cout << "exe_status = " << exe_status << std::endl;
     

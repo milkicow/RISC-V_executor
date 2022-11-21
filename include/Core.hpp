@@ -31,10 +31,12 @@ public:
         pc_ += InstructionSize;
     }
     void Dump ();
+    bool execute(Memory * mem);
 
     bool write (uint32_t addr, uint32_t value, size_t size) { return mem_->write(addr, value, size); }
     bool read (uint32_t addr, uint32_t * value, size_t size) { return mem_->read(addr, value, size); }
 
 };
+
 
 #endif

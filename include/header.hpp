@@ -3,60 +3,6 @@
 #include "Core.hpp"
 #include "Instruction.hpp"
 
-void ClearFile(std::string filename);
-
-bool execute(Memory * mem, Core * core)
-{
-    bool status = true;
-    bool exe_status = false;
-
-    core->SetReg(SP, 0x090000); 
-    while (status)
-    {
-        uint32_t undecoded_inst;
-
-        if (!mem->read(core->GetPc(), &undecoded_inst, 4)) 
-        {
-            status = false;
-            break;
-        }
-        if (undecoded_inst == 0) 
-        {
-            status = false;
-            break;
-        }
-
-        std::cout << "PC = " << core->GetPc() << std::endl;
-        std::cout << "undecoded inst = " << std::hex << undecoded_inst << std::endl;
-
-        core->SetNextPc(core->GetPc() + 4);
-        Instruction inst(core, undecoded_inst);
-
-        if (core->GetReg(R02) == 0x090000 && undecoded_inst == 0x00008067)
-        {   
-            std::cout << "END" << std::endl;
-            exe_status = true;
-            break;
-        }
-
-        inst.Dump();
-        core->Dump();
-
-        exe_status = inst.GetExexStatus();
-        if (exe_status == false)
-        {
-            std::cout << "EXECUTION WAS FAILED!!! \n";
-            status = false;
-            break;
-        }
-
-        core->SetPc(core->GetNextPc());
-        core->SetReg(R00, 0);
-    }
-
-    return exe_status;
-}
-
 void ClearFile(std::string filename)
 {
     std::fstream file(filename, std::ios_base::out);
