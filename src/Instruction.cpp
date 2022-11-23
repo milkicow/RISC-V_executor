@@ -181,136 +181,62 @@ Instruction::Instruction(Core *core, uint32_t code)
         auto funct3 = get_bits(code, 14, 12);
         auto funct7 = get_bits(code, 31, 25);
 
-        switch (funct3)
+                if (funct3 == 0b000 && funct7 == 0b0000000) // ADD
         {
-            case 0b000:
-            {
-                if (funct7 == 0b0000000) // ADD
-                {
-                    inst_tp_ = ADD;
-                    exec_status_ = Instruction::executeADD(core);
-                }
-                else if (funct7 == 0b0100000) // SUB
-                {
-                    inst_tp_ = SUB;
-                    exec_status_ = Instruction::executeSUB(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3  << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            case 0b001:
-            {
-                if (funct7 == 0b0000000) // SLL
-                {
-                    inst_tp_ = SLL;
-                    exec_status_ = Instruction::executeSLL(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3 << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            case 0b010:
-            {
-                if (funct7 == 0b0000000) // SLT
-                {
-                    inst_tp_ = SLT;
-                    exec_status_ = Instruction::executeSLT(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3 << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            case 0b011:
-            {
-                if (funct7 == 0b0000000) // SLTU
-                {
-                    inst_tp_ = SLTU;
-                    exec_status_ = Instruction::executeSLTU(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3 << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            case 0b100: 
-            {
-                if (funct7 == 0b0000000) // XOR
-                {
-                    inst_tp_ = XOR;
-                    exec_status_ = Instruction::executeXOR(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3 << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            case 0b101:
-            {
-                if (funct7 == 0b0000000) // SRL
-                {
-                    inst_tp_ = SRL;
-                    exec_status_ = Instruction::executeSRL(core);
-                }
-                else if (funct7 == 0b0100000) // SRA
-                {
-                    inst_tp_ = SRA;
-                    exec_status_ = Instruction::executeSRA(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3 << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            case 0b110:
-            {   
-                if (funct7 == 0b0000000) // OR
-                {
-                    inst_tp_ = OR;
-                    exec_status_ = Instruction::executeOR(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3 << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            case 0b111:
-            {
-                if (funct7 == 0b0000000) // AND
-                {
-                    inst_tp_ = AND;
-                    exec_status_ = Instruction::executeAND(core);
-                }
-                else 
-                {
-                    std::cout << "no match with command = " << code << "funct3 = " << funct3 << " funct7 = " << funct7 << std::endl;
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            }
-            default:
-            {
-                std::cout << "no match with command = " << code << std::endl;
-                exit(EXIT_FAILURE);
-            }
+            inst_tp_ = ADD;
+            exec_status_ = Instruction::executeADD(core);
         }
+        else if (funct3 == 0b000 && funct7 == 0b0100000) // SUB
+        {
+            inst_tp_ = SUB;
+            exec_status_ = Instruction::executeSUB(core);
+        }
+        else if (funct3 == 0b001 && funct7 == 0b0000000) // SLL
+        {
+            inst_tp_ = SLL;
+            exec_status_ = Instruction::executeSLL(core);
+        }
+        else if (funct3 == 0b010 && funct7 == 0b0000000) // SLT
+        {
+            inst_tp_ = SLT;
+            exec_status_ = Instruction::executeSLT(core);
+        }
+        else if (funct3 == 0b011 && funct7 == 0b0000000) // SLTU
+        {
+            inst_tp_ = SLTU;
+            exec_status_ = Instruction::executeSLTU(core);
+        }
+        else if (funct3 == 0b100 && funct7 == 0b0000000) // XOR
+        {
+            inst_tp_ = XOR;
+            exec_status_ = Instruction::executeXOR(core);
+        }
+        else if (funct3 == 0b101 && funct7 == 0b0000000) // SRL
+        {
+            inst_tp_ = SRL;
+            exec_status_ = Instruction::executeSRL(core);
+        }
+        else if (funct3 == 0b101 && funct7 == 0b0100000) // SRA
+        {
+            inst_tp_ = SRA;
+            exec_status_ = Instruction::executeSRA(core);
+        }
+        else if (funct3 == 0b110 && funct7 == 0b0000000) // OR
+        {
+            inst_tp_ = OR;
+            exec_status_ = Instruction::executeOR(core);
+        }
+        else if (funct3 == 0b111 && funct7 == 0b0000000) // AND
+        {
+            inst_tp_ = AND;
+            exec_status_ = Instruction::executeAND(core);
+        }
+        else
+        {
+            std::cout << "no match with command = " << code << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        
         break;
     }
     case 0b1100111: // JALR
