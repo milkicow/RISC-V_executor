@@ -147,6 +147,11 @@ Instruction::Instruction(Core *core, uint32_t code)
                     inst_tp_ = SLLI;
                     exec_status_ = Instruction::executeSLLI(core);
                 }
+                else 
+                {
+                    std::cout << "no match with command = " << code << "funct7 = " << funct7 << " funct3 = " << funct3 << std::endl;
+                    exit(EXIT_FAILURE);
+                }
                 break;
             }
             case 0b101:
@@ -156,10 +161,15 @@ Instruction::Instruction(Core *core, uint32_t code)
                     inst_tp_ = SRLI;
                     exec_status_ = Instruction::executeSRLI(core);
                 }
-                else if (funct7 == 0b0100000)
+                else if (funct7 == 0b0100000) // SRAI
                 {
                     inst_tp_ = SRAI;
                     exec_status_ = Instruction::executeSRAI(core);
+                }
+                else
+                {
+                    std::cout << "no match with command = " << code << "funct7 = " << funct7 << " funct3 = " << funct3 << std::endl;
+                    exit(EXIT_FAILURE);
                 }
                 break;
             }
@@ -181,7 +191,7 @@ Instruction::Instruction(Core *core, uint32_t code)
         auto funct3 = get_bits(code, 14, 12);
         auto funct7 = get_bits(code, 31, 25);
 
-                if (funct3 == 0b000 && funct7 == 0b0000000) // ADD
+        if (funct3 == 0b000 && funct7 == 0b0000000) // ADD
         {
             inst_tp_ = ADD;
             exec_status_ = Instruction::executeADD(core);
@@ -236,7 +246,7 @@ Instruction::Instruction(Core *core, uint32_t code)
             std::cout << "no match with command = " << code << std::endl;
             exit(EXIT_FAILURE);
         }
-        
+
         break;
     }
     case 0b1100111: // JALR
