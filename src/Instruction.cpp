@@ -524,7 +524,7 @@ bool Instruction::executeSRA(Core *core)
 
 bool Instruction::executeJAL(Core *core) 
 {
-    core->SetReg(rd_, core->GetPc() + 4);
+    core->SetReg(rd_, core->GetPc() + INSTRUCTION_SIZE);
     core->branch(core->GetPc() + imm_);
     return true;
 };
@@ -534,7 +534,7 @@ bool Instruction::executeJALR(Core *core)
     // std::cout << "before: " << std::endl;
     // std::cout << "pc_ = " << core->GetPc() << " imm_ = " << imm_ << std::endl;
     // std::cout << "next_pc_ = " << core->GetNextPc() << std::endl;
-    core->SetReg(rd_, core->GetPc() + 4);
+    core->SetReg(rd_, core->GetPc() + INSTRUCTION_SIZE);
     core->branch((core->GetReg(rs1_) + imm_ ) & (0xFFFFFFFE));
     // std::cout << "after: " << std::endl;
     // std::cout << "pc_ = " << core->GetPc() << " imm_ = " << imm_ << std::endl;

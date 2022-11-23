@@ -73,7 +73,7 @@ private:
     bool executeSRA(Core *core);
     bool executeADDI(Core *core);
     bool executeSLTI(Core *core);
-    bool executeSLTIU(Core * core);
+    bool executeSLTIU(Core *core);
     bool executeANDI(Core *core);
     bool executeORI(Core *core);
     bool executeXORI(Core *core);

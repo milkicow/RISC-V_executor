@@ -28,7 +28,7 @@ public:
         next_pc_ = target; 
     }
     void IncPc () {
-        pc_ += InstructionSize;
+        pc_ += INSTRUCTION_SIZE;
     }
     void Dump ();
     bool execute(Memory * mem);
