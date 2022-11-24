@@ -331,25 +331,25 @@ Instruction::Instruction(Core *core, uint32_t code)
             case 0b000: // BEQ
             {
                 inst_tp_ = BEQ;
-                exec_status_ = executeBEQ(core);
+                exec_status_ = Instruction::executeBEQ(core);
                 break;
             }
             case 0b001: // BNE
             {
                 inst_tp_ = BNE;
-                exec_status_ = executeBNE(core);
+                exec_status_ = Instruction::executeBNE(core);
                 break;
             }
             case 0b100: // BLT
             {
                 inst_tp_ = BLT;
-                exec_status_ = executeBLT(core);
+                exec_status_ = Instruction::executeBLT(core);
                 break;
             }
             case 0b101: // BGE
             {
                 inst_tp_ = BGE;
-                exec_status_ = executeBGE(core);
+                exec_status_ = Instruction::executeBGE(core);
                 break;
             }
             case 0b110: // BLTU
@@ -357,7 +357,7 @@ Instruction::Instruction(Core *core, uint32_t code)
                 imm_ = (get_bits(code, 11, 8) << 1) + (get_bits(code, 7, 7) << 11) + (get_bits(code, 30, 25) << 5) + (get_bits(code >> 31, 0, 0) << 12);
 
                 inst_tp_ = BLTU;
-                exec_status_ = executeBLTU(core);
+                exec_status_ = Instruction::executeBLTU(core);
                 break;
             }
             case 0b111: // BGEU
@@ -365,7 +365,7 @@ Instruction::Instruction(Core *core, uint32_t code)
                 imm_ = (get_bits(code, 11, 8) << 1) + (get_bits(code, 7, 7) << 11) + (get_bits(code, 30, 25) << 5) + (get_bits(code >> 31, 0, 0) << 12);
 
                 inst_tp_ = BGEU;
-                exec_status_ = executeBGEU(core);
+                exec_status_ = Instruction::executeBGEU(core);
                 break;
             }
             default:
