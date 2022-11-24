@@ -1,5 +1,7 @@
 #include "header.hpp"
 #include "dump_read.hpp"
+#include "Memory.hpp"
+#include "Core.hpp"
 
 
 int main(int argc, char *argv[]) {
