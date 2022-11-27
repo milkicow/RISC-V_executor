@@ -1,0 +1,42 @@
+#pragma once
+
+class Core;
+class Instruction;
+
+bool executeAUIPC(Core * core, const Instruction * inst);
+bool executeLUI(Core * core, const Instruction * inst);
+bool executeSLLI(Core * core, const Instruction * inst);
+bool executeSRLI(Core * core, const Instruction * inst);
+bool executeSRAI(Core * core, const Instruction * inst);
+bool executeADD(Core * core, const Instruction * inst);
+bool executeSLT(Core * core, const Instruction * inst);
+bool executeSLTU(Core * core, const Instruction * inst);
+bool executeAND(Core * core, const Instruction * inst);
+bool executeOR(Core * core, const Instruction * inst);
+bool executeXOR(Core * core, const Instruction * inst);
+bool executeSLL(Core * core, const Instruction * inst);
+bool executeSRL(Core * core, const Instruction * inst);
+bool executeSUB(Core * core, const Instruction * inst);
+bool executeSRA(Core * core, const Instruction * inst);
+bool executeADDI(Core * core, const Instruction * inst);
+bool executeSLTI(Core * core, const Instruction * inst);
+bool executeSLTIU(Core * core, const Instruction * inst);
+bool executeANDI(Core * core, const Instruction * inst);
+bool executeORI(Core * core, const Instruction * inst);
+bool executeXORI(Core * core, const Instruction * inst);
+bool executeJAL(Core * core, const Instruction * inst);
+bool executeJALR(Core * core, const Instruction * inst);
+bool executeLB(Core * core, const Instruction * inst);
+bool executeLH(Core * core, const Instruction * inst);
+bool executeLW(Core * core, const Instruction * inst);
+bool executeLBU(Core * core, const Instruction * inst);
+bool executeLHU(Core * core, const Instruction * inst);
+bool executeSB(Core * core, const Instruction * inst);
+bool executeSH(Core * core, const Instruction * inst);
+bool executeSW(Core * core, const Instruction * inst);
+bool executeBEQ(Core * core, const Instruction * inst);
+bool executeBNE(Core * core, const Instruction * inst);
+bool executeBLT(Core * core, const Instruction * inst);
+bool executeBGE(Core * core, const Instruction * inst);
+bool executeBLTU(Core * core, const Instruction * inst);
+bool executeBGEU(Core * core, const Instruction * inst);
