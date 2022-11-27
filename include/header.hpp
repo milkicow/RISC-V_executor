@@ -2,6 +2,7 @@
 #define HEADER_H
 
 #include "libs.hpp"
+#include "Instruction.hpp"
 
 inline void ClearFile(std::string filename)
 {
@@ -30,6 +31,12 @@ inline void dump_bits(uint32_t code, size_t head, size_t tail)
         std::cout << (int)((bits >> i) & 1);
     }
     //std::cout << std::endl;
+}
+
+inline Instruction decode_instr(uint32_t undecoded_inst)
+{   
+    Instruction inst(undecoded_inst);
+    return inst;
 }
 
 #endif

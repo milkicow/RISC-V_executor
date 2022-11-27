@@ -14,6 +14,7 @@ const size_t MEM_SIZE = 0x100000;
 const size_t REGS_NUMBER = 32;
 const size_t INSTRUCTION_SIZE = 4;
 const size_t NUMBER_OF_INSTRUCTIONS = 37;
+const size_t CACHE_SIZE = 50; // random number
 
 enum types
 {
