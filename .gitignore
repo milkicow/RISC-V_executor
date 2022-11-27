@@ -5,3 +5,5 @@
 dump_read1.cpp
 build
 test_prog.dump
+test_prog.out
+test_prog.c

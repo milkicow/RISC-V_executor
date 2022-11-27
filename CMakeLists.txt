@@ -14,6 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(SOURCE ${PROJECT_SOURCE_DIR}/src/Core.cpp
            ${PROJECT_SOURCE_DIR}/src/Instruction.cpp
            ${PROJECT_SOURCE_DIR}/src/Memory.cpp
+           ${PROJECT_SOURCE_DIR}/src/Execute.cpp
            ${PROJECT_SOURCE_DIR}/main.cpp         )
         
 add_executable(risc ${SOURCE})

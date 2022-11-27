@@ -1,6 +1,8 @@
+#include "Execute.hpp"
+#include "header.hpp"
 #include "Core.hpp"
 #include "Instruction.hpp"
-
+#include "cache.hpp"
 
 void Core::Dump() 
 {
@@ -21,6 +23,8 @@ bool Core::execute(Memory * mem)
     bool status = true;
     bool exe_status = false;
 
+    lfu::cache<Instruction> cache(CACHE_SIZE);
+
     SetReg(SP, 0x090000); 
     while (status)
     {
@@ -37,11 +41,32 @@ bool Core::execute(Memory * mem)
             break;
         }
 
-        std::cout << "PC = " << GetPc() << std::endl;
-        std::cout << "undecoded inst = " << std::hex << undecoded_inst << std::endl;
+        // std::cout << "PC = " << GetPc() << std::endl;
+        // std::cout << "undecoded inst = " << std::hex << undecoded_inst << std::endl;
 
         SetNextPc(GetPc() + 4);
-        Instruction inst(this, undecoded_inst);
+
+
+        bool (*execute[]) (Core * core, const Instruction * inst) = {
+            executeLUI, executeAUIPC, 
+            executeSLLI, executeSRLI, executeSRAI,
+            executeADD, executeSLT, executeSLTU,
+            executeAND, executeOR, executeXOR,
+            executeSLL, executeSRL,
+            executeSUB, executeSRA,
+            executeADDI, executeSLTI, executeSLTIU,
+            executeANDI, executeORI, executeXORI,
+            executeJAL, executeJALR,
+            executeLB, executeLH, executeLW, executeLBU, executeLHU,
+            executeSB, executeSH, executeSW,
+            executeBEQ, executeBNE, executeBLT, executeBGE, executeBLTU, executeBGEU
+        };
+
+        Instruction inst = cache.lookup_update(undecoded_inst, decode_instr);
+
+        InstId inst_tp_ = inst.get_inst_tp_();
+        std::cout << " on instruction " << InstIdName[inst_tp_] << " " << std::hex << undecoded_inst << std::endl;
+        exe_status = execute[inst_tp_] (this, &inst);
 
         if (GetReg(R02) == 0x090000 && undecoded_inst == 0x00008067)
         {   
@@ -53,7 +78,6 @@ bool Core::execute(Memory * mem)
         inst.Dump();
         Dump();
 
-        exe_status = inst.GetExexStatus();
         if (exe_status == false)
         {
             std::cout << "EXECUTION WAS FAILED!!! \n";
