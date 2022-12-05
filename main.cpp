@@ -15,7 +15,9 @@ int main(int argc, char *argv[]) {
     
     ClearFile("logfile.txt");
     
-    stream = pars::read_str(filename);
+    std::ifstream file(filename, std::ios_base::in);
+    stream = pars::read_str(file);
+    file.close();
 
     Memory mem = {};
     pars::parsing(mem.GetMemAddr(), stream);

@@ -11,9 +11,7 @@ namespace pars {
 
 void delete_symbols(std::string& string);
 
-std::vector<std::string> read_str(std::string filename) {
-
-    std::fstream file(filename, std::ios_base::in);
+std::vector<std::string> read_str(std::ifstream &file) {
 
     file.seekg(0, std::ios_base::end);
     size_t file_size = file.tellg();
@@ -31,7 +29,6 @@ std::vector<std::string> read_str(std::string filename) {
         }
     }
 
-    file.close();
     return stream;
 }
 

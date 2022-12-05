@@ -12,7 +12,6 @@ inline void ClearFile(std::string filename)
 
 inline uint32_t get_bits(uint32_t code, size_t head, size_t tail)
 {
-    const size_t MAX_BITS_INSTR = 32;
     assert(head >= tail);
     assert(MAX_BITS_INSTR > head);
 
@@ -21,14 +20,13 @@ inline uint32_t get_bits(uint32_t code, size_t head, size_t tail)
 
 inline void dump_bits(uint32_t code, size_t head, size_t tail)
 {
-    const size_t MAX_BITS_INSTR = 32;
     assert(head >= tail);
     assert(MAX_BITS_INSTR > head);
 
     uint32_t bits = get_bits(code, head, tail);
     for (int i = head - tail; i >= 0; --i)
     {
-        std::cout << (int)((bits >> i) & 1);
+        std::cout << static_cast<int>((bits >> i) & 1);
     }
     //std::cout << std::endl;
 }

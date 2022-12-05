@@ -4,7 +4,7 @@
 #include "Instruction.hpp"
 #include "cache.hpp"
 
-void Core::Dump() 
+void Core::Dump() const
 {
     std::fstream log_file("logfile.txt", std::ios_base::app);
     log_file << "*--------------------------------------------------* \n";
